@@ -1,59 +1,72 @@
 class CarRental {
     constructor() {
-        this.list = [];
-        this.carsUnderRepair = []
+        this.list = []
+        this.brokenCar = [];
     }
     intro() {
-        console.log('');
-        console.log(`<<<< Hi, we are CityBird and we have ${this.list.length} cars available >>>>`);
-        console.log('')
+        let count = 0
+        for (let i = 0; i < this.list.length; i++) {
+            const object = this.list[i];
+            if (object.working === true) {
+                count++
+            }
+
+        }
+        console.log(`Hi, we are CityBird and we have ${count} cars available.`);
+
     }
-    addCar(name, color, price) {
-        this.list.push({ name, color, price });
+
+    addCar(model, color, price) {
+
+        this.list.push({
+            'model': model,
+            'color': color,
+            'price': price,
+            working: true
+        })
+        // console.log(this.list);
     }
+
     carPark() {
-        // console.log('***** CARS FOR RENT *****');
+        let position = 0
         for (let i = 0; i < this.list.length; i++) {
-            const car = this.list[i];
-            console.log(`${i + 1}. ${car.name} (${car.color}) is for ${car.price}EUR/day`)
+            const object = this.list[i];
+            if (object.working === true) {
+                position++
+                console.log(
+                    `${[position]}. ${object.model} (${object.color}) is for ${object.price}EUR/day.`
+                )
+            }
         }
-        // console.log('**************************');
-    };
+    }
     updateCarPrice(index, newPrice) {
-        this.list[index].price = newPrice;
-    };
+        this.list[index].price = newPrice
+        // console.log(this.list);
+    }
+
+
     carAccident(index) {
-        const updatedCarList = []
+        this.list[index].working = false;
+    }
 
-        for (let i = 0; i < this.list.length; i++) {
-            const car = this.list[i];
-            if (index === i) {
-                this.carsUnderRepair.push(car)
-            } else {
-                updatedCarList.push(car)
-            }
-        }
-        this.list = updatedCarList;
-    };
-    carRepair() {
-        const addCar = [...this.carsUnderRepair, ...this.list];
-        this.list = addCar;
-    };
+
+    carRepair(index) {
+        this.list[index].working = true;
+
+    }
+
+
+
     removeCar(index) {
-
-        const updatedCarList = []
-
+        const newList = [];
         for (let i = 0; i < this.list.length; i++) {
-            const car = this.list[i];
-            if (index !== i) {
-                updatedCarList.push(car)
+            let element = this.list[i];
+            if (i !== index) {
+                newList.push(element)
             }
 
         }
-        this.list = updatedCarList;
-        // const tempList = this.list.filter((car) => car !== index)
-        // this.list = tempList
+        this.list = newList;
     }
 }
-
 module.exports = CarRental;
